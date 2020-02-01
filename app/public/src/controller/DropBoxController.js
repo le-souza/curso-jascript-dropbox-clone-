@@ -13,6 +13,7 @@ class DropBoxController {
 
     }
 
+    
     initEvents(){
 
         this.btnSendFileEl.addEventListener("click", event => {
@@ -33,12 +34,14 @@ class DropBoxController {
 
     }
 
+    
     modalShow(show = true){
         
         this.snackModalEl.style.display = (show) ? "block" : "none";
 
     }
 
+    
     uploadTask(files){
 
         let promises = [];
@@ -92,12 +95,13 @@ class DropBoxController {
 
             }));
 
-        });
+        }); //End forEach in files
 
         return Promise.all(promises);
 
     } //End uploadTask
 
+    
     uploadProgress(event, file){
 
         let timeSpent   = Date.now() - this.startUploadTime; //Tempo gasto = momento atual - momento inical
@@ -108,33 +112,34 @@ class DropBoxController {
 
         this.progressBarEl.style.width = `${porcent}%`;
 
-        this.nameFileEl.innerHTML = file.name;
-        this.timeLeftEl.innerHTML = this.formatTimeToHuman(timeLeft);
+        this.nameFileEl.innerHTML = "<i>" + file.name + "</i>";
+        this.timeLeftEl.innerHTML = "<b>" + this.formatTimeToHuman(timeLeft) + "</b>";
 
         console.log(timeSpent, timeLeft, porcent);
 
     } //End UploadProgress
 
+    
     formatTimeToHuman(duration){
 
-        let seconds = parseInt((duration / 1000) % 60);             //milessegundos para segundos
-        let minutes = parseInt((duration / (1000 * 60)) % 60);      //milessegundos para minutos
-        let hours = parseInt((duration / (1000 * 60 * 60)) % 24); //milessegundos para horas
+        let seconds = parseInt((duration / 1000) % 60);                 //milessegundos para segundos
+        let minutes = parseInt((duration / (1000 * 60)) % 60);          //milessegundos para minutos
+        let hours   = parseInt((duration / (1000 * 60 * 60)) % 24);     //milessegundos para horas
 
         if (hours > 0) {
-            return `${hours} horas, ${minutes} minutos e ${seconds} segundos`;
+            return `${hours} horas, ${minutes} minutos e ${seconds} segundos restantes`;
         }
 
         if (minutes > 0) {
-            return `${minutes} minutos e ${seconds} segundos`;
+            return `${minutes} minutos e ${seconds} segundos restantes`;
         }
 
         if (seconds > 0) {
-            return `${seconds} segundos`;
+            return `${seconds} segundos restantes`;
         }
 
-        return null;
+        return ' processando';
 
-    }
+    } //End formatTimeToHuman
 
 } //End Class
